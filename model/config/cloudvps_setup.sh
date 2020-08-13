@@ -71,6 +71,8 @@ echo "Downloading model, hang on..."
 #cd ${TMP_PATH}
 #wget -O model.bin ${MODEL_WGET}
 #mv model.bin ${ETC_PATH}/resources
+cp ${TMP_PATH}/${REPO_LBL}/resources/embedding.bin ${ETC_PATH}/resources
+
 
 echo "Setting up ownership..."  # makes www-data (how nginx is run) owner + group for all data etc.
 chown -R www-data:www-data ${ETC_PATH}
