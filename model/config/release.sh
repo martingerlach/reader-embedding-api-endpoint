@@ -2,8 +2,8 @@
 # update API endpoint with new model, code, etc.
 
 APP_LBL='api-endpoint'  # descriptive label for endpoint-related directories
-REPO_LBL='topicmodel'  # directory where repo code will go
-GIT_CLONE_HTTPS='https://github.com/geohci/research-api-endpoint-template.git'  # for `git clone`
+REPO_LBL='reader-embedding'  # directory where repo code will go
+GIT_CLONE_HTTPS='https://github.com/martingerlach/test-api.git'  # for `git clone`
 ETC_PATH="/etc/${APP_LBL}"  # app config info, scripts, ML models, etc.
 SRV_PATH="/srv/${APP_LBL}"  # application resources for serving endpoint
 TMP_PATH="/tmp/${APP_LBL}"  # store temporary files created as part of setting up app (cleared with every update)
