@@ -33,7 +33,7 @@ def get_recommendations():
         qid_nn = recommend(qid,nn = n, threshold = threshold)
         result = [ {'qid': r['qid'], 'score':r['score']}  for r in qid_nn]
 
-        return jsonify(result_formatted)
+        return jsonify(result)
     return jsonify({'Error':qid})
 
 def parse_args(request):
