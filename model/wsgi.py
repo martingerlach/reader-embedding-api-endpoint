@@ -20,6 +20,7 @@ cors = CORS(app, resources={r'/api/*': {'origins': '*'}})
 
 # fast-text model for making predictions
 FT_MODEL =  fasttext.load_model(os.path.join(__dir__, 'resources/embedding.bin'))
+VOCAB = FT_MODEL.get_words()
 
 @app.route('/api/v1/reader', methods=['GET'])
 def get_recommendations():
