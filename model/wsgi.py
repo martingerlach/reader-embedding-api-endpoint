@@ -1,6 +1,6 @@
 # Many thanks to: https://wikitech.wikimedia.org/wiki/Help:Toolforge/My_first_Flask_OAuth_tool
 import os
-
+import re
 import fasttext
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
@@ -86,7 +86,7 @@ def validate_qid_format(qid):
 def validate_qid_model(qid):
     return qid in VOCAB
 
-def recommend(qid, nn = 10, list_wikis= ['enwiki'], threshold = 0.):
+def recommend(qid, nn = 10, threshold = 0.):
     """
     get nn closest qids in emebdding space.
     """
