@@ -1,18 +1,26 @@
-## Basic Cloud VPS API Endpoint setup
+# reader-embedding-api-endpoint
 
-This repo provides the basic to get a robust and extensible API endpoint up and running.
-The basic pre-requisites are as follows:
-* Cloud VPS instance: <https://wikitech.wikimedia.org/wiki/Help:Cloud_VPS_Instances>
-* Cloud VPS web-proxy: <https://wikitech.wikimedia.org/wiki/Help:Using_a_web_proxy_to_reach_Cloud_VPS_servers_from_the_internet>
+This repo sets up an API-endpoint on a Cloud-VPS instance to query the reader-embeddings trained on reading sessions.
 
-With these in place, you can [ssh onto](https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#Accessing_Cloud_VPS_instances)
-your instance and use the `cloudvps_setup.sh` script to get a basic API setup.
+It was adapted from the template in https://github.com/wikimedia/research-api-endpoint-template
 
-The basic components of the API are as follows:
-* systemd: Linux service manager that we configure to start up nginx (listen for user requests) and uwsgi (listen for nginx requests). Controlled via `systemctl` utility. Configuration provided in `config/model.service`.
-* nginx: handles incoming user requests (someone visits your URL), does load balancing, and sends them via uwsgi to be handled. We keep this lightweight so it just passes messages as opposed to handling heavy processing so one incoming request doesn't stall another. Configuration provided in `config/model.nginx`.
-* uwsgi: service / protocol through which requests are passed by nginx to the application. This happens via a unix socket. Configuration provided in `config/uwsgi.ini`.
-* flask: Python library that can handle uwsgi requests, do the processing, and serve back responses. Configuration provided in `wsgi.py`
+
+## Setup
+
+run `model/config/cloudvps_setup.sh`
+
+Test-query: https://reader.wmflabs.org/api/v1/reader?qid=Q81068910
+
+
+## What it does
+
+The input is a wikidata-item.
+
+The output is a list of wikidata-items which are most similar based on the embedding of reading-sessions.
+
+
+
+## Additional Information
 
 ### Data collection
 The default logging by nginx builds an access log located at `/var/log/nginx/access.log` that logs IP, timestamp, referer, request, and user_agent information.
@@ -44,13 +52,3 @@ You will probably have to change the following components:
 * `requirements.txt`: update to include your Python dependencies
 * Currently `setup.py` is not used, but it would need to be updated in a more complete package system.
 
-### What this template is not
-This repo does not include a UI for interacting with and contextualizing this API.
-For that, see: <https://github.com/wikimedia/research-api-interface-template> or the [wiki-topic example](https://wiki-topic.toolforge.org/).
-
-For a much simpler combined API endpoint + UI for interacting with it, you can also set up a simple [Flask app in Toolforge](https://wikitech.wikimedia.org/wiki/Help:Toolforge/My_first_Flask_OAuth_tool),
-though you will also have much less control over the memory / disk / CPUs available to you.
-
-### Acknowledgements
-Built largely from a mixture of <https://github.com/wikimedia/research-recommendation-api> and <https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-20-04>.
-# test-api
