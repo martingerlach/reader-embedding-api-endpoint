@@ -9,7 +9,8 @@ It was adapted from the template in https://github.com/wikimedia/research-api-en
 
 run `model/config/cloudvps_setup.sh`
 
-Test-query: https://reader.wmflabs.org/api/v1/reader?qid=Q81068910
+Test-query: https://reader.wmcloud.org/api/v1/reader?qid=Q18975243
+
 
 
 ## What it does
