@@ -73,8 +73,8 @@ echo "Downloading model, hang on..."
 cp ${TMP_PATH}/${REPO_LBL}/resources/embedding.bin ${ETC_PATH}/resources
 # try to download a bigger model via wget
 cd ${TMP_PATH}
-wget -O model.bin ${MODEL_WGET}
-mv model.bin ${ETC_PATH}/resources
+wget -O embedding.bin ${MODEL_WGET}
+mv embedding.bin ${ETC_PATH}/resources
 
 
 echo "Setting up ownership..."  # makes www-data (how nginx is run) owner + group for all data etc.
