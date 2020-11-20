@@ -5,7 +5,8 @@
 APP_LBL='api-endpoint'  # descriptive label for endpoint-related directories
 REPO_LBL='reader-embedding'  # directory where repo code will go
 GIT_CLONE_HTTPS='https://github.com/martingerlach/reader-embedding-api-endpoint.git'  # for `git clone`
-# MODEL_WGET='https://ndownloader.figshare.com/files/<file-number>'  # model binary -- ndownloader.figshare is a good host
+# MODEL_WGET='https://analytics.wikimedia.org/published/datasets/one-off/mgerlach/reader-embedding-api/embedding.bin'  # model binary https://wikitech.wikimedia.org/wiki/Analytics/Web_publication
+MODEL_WGET='https://analytics.wikimedia.org/published/datasets/one-off/mgerlach/reader-embedding-api/embedding-w2v_wikidata_2020-10-12-00_2020-10-19-00_args-50-5.bin'  # model binary -- ndownloader.figshare is a good host
 
 ETC_PATH="/etc/${APP_LBL}"  # app config info, scripts, ML models, etc.
 SRV_PATH="/srv/${APP_LBL}"  # application resources for serving endpoint
@@ -68,10 +69,12 @@ pip install -r ${TMP_PATH}/${REPO_LBL}/requirements.txt
 # ${TMP_PATH}/node_modules/bower/bin/bower install --allow-root ${TMP_PATH}/recommendation-api/recommendation/web/static/bower.json
 
 echo "Downloading model, hang on..."
-#cd ${TMP_PATH}
-#wget -O model.bin ${MODEL_WGET}
-#mv model.bin ${ETC_PATH}/resources
+# copy the mini-embedding from the repo
 cp ${TMP_PATH}/${REPO_LBL}/resources/embedding.bin ${ETC_PATH}/resources
+# try to download a bigger model via wget
+cd ${TMP_PATH}
+wget -O model.bin ${MODEL_WGET}
+mv model.bin ${ETC_PATH}/resources
 
 
 echo "Setting up ownership..."  # makes www-data (how nginx is run) owner + group for all data etc.
