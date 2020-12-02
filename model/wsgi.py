@@ -105,7 +105,15 @@ def recommend(qid, nn = 10, threshold = 0.):
 def get_articlelist():
     ## parse arguments
     # input qid
-    qid = request.args.get('qid').upper() ## pass qid-seed
+    ## seed qid
+    qid = request.args.get('qid').upper()
+    if not validate_qid_format(qid):
+        qid = "Error: poorly formatted 'qid' field. {0} does not match 'Q#...'".format(qid)
+    else:
+        if not validate_qid_model(qid):
+            qid = "Error: {0} is not included in the model".format(qid)
+
+
     # target language
     lang = request.args.get('lang', 'en').replace('wiki','')
     # number of items to retrieve
@@ -117,22 +125,24 @@ def get_articlelist():
     except:
         k = k_default
 
-    ## get neighbors
-    qid_nn = FT_MODEL.get_nearest_neighbors(qid,k=k)
-    result = [
-        {'qid': r[1],
-         'score':r[0],
-         }  for r in qid_nn]
+    if validate_qid_format(qid) and validate_qid_model(qid):
+        ## get neighbors
+        qid_nn = FT_MODEL.get_nearest_neighbors(qid,k=k)
+        result = [
+            {'qid': r[1],
+             'score':r[0],
+             }  for r in qid_nn]
 
-    result = add_article_titles(result,lang)
-    result_formatted = [
-        {'qid': r['qid'],
-         'title': r['title'],
-         'score':r['score'],
-         }  for r in result]
+        result = add_article_titles(result,lang)
+        result_formatted = [
+            {'qid': r['qid'],
+             'title': r['title'],
+             'score':r['score'],
+             }  for r in result]
 
-    return jsonify(result_formatted)
-
+        return jsonify(result_formatted)
+    else:
+        return jsonify({'Error':qid})
     #     return jsonify(result)
     # return jsonify({'Error':qid})
 
